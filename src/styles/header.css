@@ -1,0 +1,21 @@
+/* Gradientes para el header que cambian con el tema */
+
+/* Header principal */
+.header-background {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.dark .header-background {
+  background: linear-gradient(135deg, rgba(30,41,59,0.98) 0%, rgba(15,23,42,0.98) 100%);
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+/* Menú móvil */
+.mobile-menu-background {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
+}
+
+.dark .mobile-menu-background {
+  background: linear-gradient(135deg, rgba(30,41,59,0.98) 0%, rgba(15,23,42,0.98) 100%);
+}

@@ -1,0 +1,145 @@
+/* Estilos personalizados para SweetAlert2 */
+.swal2-popup {
+  border-radius: 12px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.swal2-title {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #1f2937 !important;
+  margin-bottom: 1rem !important;
+}
+
+.swal2-html-container {
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+  color: #4b5563 !important;
+  margin: 0 !important;
+}
+
+.swal2-confirm {
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  border: none !important;
+  transition: all 0.2s !important;
+}
+
+.swal2-cancel {
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  border: none !important;
+  transition: all 0.2s !important;
+}
+
+.swal2-confirm:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.swal2-cancel:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.swal2-icon {
+  margin: 0 auto 1.5rem !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: #f59e0b !important;
+  color: #f59e0b !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: #10b981 !important;
+  color: #10b981 !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: #ef4444 !important;
+  color: #ef4444 !important;
+}
+
+/* Estilos para el contenido HTML personalizado */
+.swal2-html-container .bg-gray-50 {
+  background-color: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.swal2-html-container .text-gray-600 {
+  color: #4b5563;
+}
+
+.swal2-html-container .text-gray-900 {
+  color: #111827;
+}
+
+.swal2-html-container .text-blue-600 {
+  color: #2563eb;
+}
+
+.swal2-html-container .text-red-600 {
+  color: #dc2626;
+}
+
+.swal2-html-container .font-semibold {
+  font-weight: 600;
+}
+
+.swal2-html-container .font-medium {
+  font-weight: 500;
+}
+
+.swal2-html-container .text-sm {
+  font-size: 0.875rem;
+}
+
+.swal2-html-container .text-left {
+  text-align: left;
+}
+
+.swal2-html-container .mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.swal2-html-container .mt-3 {
+  margin-top: 0.75rem;
+}
+
+/* Z-index para SweetAlert */
+.swal2-popup {
+  z-index: 10001 !important;
+}
+
+.swal2-backdrop {
+  z-index: 10000 !important;
+}
+
+.swal-z-index {
+  z-index: 10001 !important;
+}
+
+/* Asegurar que SweetAlert esté por encima de todos los modales */
+.swal2-container {
+  z-index: 10001 !important;
+}
+
+.swal2-popup.swal-z-index {
+  z-index: 10001 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .swal2-popup {
+    margin: 1rem !important;
+    width: calc(100% - 2rem) !important;
+  }
+}
