@@ -19,6 +19,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import { useSidebar } from '../../context/SidebarContext';
 import { useAuth } from '../../context/AuthContext';
+import { useConfig } from '../../hooks/useConfig';
 import { ThemeToggle } from './ThemeToggle';
 import { useTranslation } from '../../context/LanguageContext';
 
@@ -30,6 +31,7 @@ export function Header() {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { isCollapsed } = useSidebar();
   const { logout, user } = useAuth();
+  const { profile } = useConfig();
   const { t } = useTranslation();
 
   // Cerrar menú del usuario al hacer clic fuera
@@ -45,6 +47,49 @@ export function Header() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // Componente auxiliar para el avatar del usuario
+  const UserAvatar = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
+    const sizeClasses = {
+      sm: 'w-8 h-8',
+      md: 'w-10 h-10',
+      lg: 'w-12 h-12'
+    };
+    
+    const textSizeClasses = {
+      sm: 'text-xs',
+      md: 'text-sm',
+      lg: 'text-lg'
+    };
+    
+    return (
+      <motion.div
+        className={`bg-gradient-to-br from-blue-500 to-purple-600 text-white ${sizeClasses[size]} rounded-lg sm:rounded-xl shadow-md flex items-center justify-center overflow-hidden`}
+        whileHover={{ scale: 1.05 }}
+      >
+        {profile?.foto_perfil ? (
+          <img
+            src={profile.foto_perfil}
+            alt="Foto de perfil"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Si la imagen falla al cargar, mostrar la inicial
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              const parent = target.parentElement;
+              if (parent) {
+                parent.innerHTML = `<span class="${textSizeClasses[size]} font-bold">${profile?.nombre?.charAt(0)?.toUpperCase() || user?.nombre?.charAt(0)?.toUpperCase() || 'U'}</span>`;
+              }
+            }}
+          />
+        ) : (
+          <span className={`${textSizeClasses[size]} font-bold`}>
+            {profile?.nombre?.charAt(0)?.toUpperCase() || user?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+          </span>
+        )}
+      </motion.div>
+    );
+  };
 
   const mobileMenuItems = [
     { to: '/dashboard', icon: Home, label: t('navigation.dashboard'), color: 'from-blue-500 to-blue-600' },
@@ -121,14 +166,7 @@ export function Header() {
                 className="flex items-center space-x-2 sm:space-x-3 p-1.5 sm:p-2 hover:bg-white/80 dark:hover:bg-dark-700/80 rounded-lg sm:rounded-xl transition-all duration-200"
               >
                 <div className="flex items-center space-x-3">
-                  <motion.div
-                    className="bg-gradient-to-br from-blue-500 to-purple-600 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl shadow-md flex items-center justify-center"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <span className="text-xs sm:text-sm font-bold">
-                      {user?.nombre?.charAt(0)?.toUpperCase() || 'U'}
-                    </span>
-                  </motion.div>
+                  <UserAvatar size="md" />
                   <div className="hidden sm:block text-left min-w-0">
                     <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate max-w-36">
                       {user?.nombre || 'Usuario'}
@@ -152,11 +190,7 @@ export function Header() {
                   >
                     <div className="p-4">
                       <div className="flex items-center space-x-3 mb-4">
-                        <div className="bg-gradient-to-br from-blue-500 to-purple-600 text-white w-12 h-12 rounded-xl shadow-md flex items-center justify-center">
-                          <span className="text-lg font-bold">
-                            {user?.nombre?.charAt(0)?.toUpperCase() || 'U'}
-                          </span>
-                        </div>
+                        <UserAvatar size="lg" />
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-gray-900 dark:text-gray-100 truncate">
                             {user?.nombre || 'Usuario'}
@@ -258,14 +292,7 @@ export function Header() {
                   transition={{ delay: 0.2 }}
                   className="flex items-center space-x-3 p-4 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-dark-700 dark:to-blue-900/20 rounded-xl mb-6"
                 >
-                  <motion.div
-                    className="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-2.5 rounded-xl shadow-md"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <span className="text-sm font-bold">
-                      {user?.nombre?.charAt(0)?.toUpperCase() || 'U'}
-                    </span>
-                  </motion.div>
+                  <UserAvatar size="sm" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
                       {user?.nombre || 'Usuario'}

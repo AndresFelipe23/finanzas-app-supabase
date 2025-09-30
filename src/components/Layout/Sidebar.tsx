@@ -17,6 +17,7 @@ import {
   Tag
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useConfig } from '../../hooks/useConfig';
 import { useSidebar } from '../../context/SidebarContext';
 import { isSupabaseConfigured } from '../../lib/supabase';
 import { useTranslation } from '../../context/LanguageContext';
@@ -25,8 +26,52 @@ import { useTranslation } from '../../context/LanguageContext';
 
 export function Sidebar() {
   const { logout, user, isDemo } = useAuth();
+  const { profile } = useConfig();
   const { isCollapsed, toggleSidebar } = useSidebar();
   const { t } = useTranslation();
+
+  // Componente auxiliar para el avatar del usuario
+  const UserAvatar = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
+    const sizeClasses = {
+      sm: 'w-8 h-8',
+      md: 'w-10 h-10',
+      lg: 'w-12 h-12'
+    };
+    
+    const textSizeClasses = {
+      sm: 'text-xs',
+      md: 'text-sm',
+      lg: 'text-lg'
+    };
+    
+    return (
+      <motion.div
+        className={`bg-gradient-to-br from-blue-500 to-purple-600 text-white ${sizeClasses[size]} rounded-lg sm:rounded-xl shadow-md flex items-center justify-center overflow-hidden`}
+        whileHover={{ scale: 1.05 }}
+      >
+        {profile?.foto_perfil ? (
+          <img
+            src={profile.foto_perfil}
+            alt="Foto de perfil"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Si la imagen falla al cargar, mostrar la inicial
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              const parent = target.parentElement;
+              if (parent) {
+                parent.innerHTML = `<span class="${textSizeClasses[size]} font-bold">${profile?.nombre?.charAt(0)?.toUpperCase() || user?.nombre?.charAt(0)?.toUpperCase() || 'U'}</span>`;
+              }
+            }}
+          />
+        ) : (
+          <span className={`${textSizeClasses[size]} font-bold`}>
+            {profile?.nombre?.charAt(0)?.toUpperCase() || user?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+          </span>
+        )}
+      </motion.div>
+    );
+  };
 
   const menuItems = [
     { to: '/dashboard', icon: Home, label: t('navigation.dashboard'), color: 'from-blue-500 to-blue-600' },
@@ -194,14 +239,7 @@ export function Sidebar() {
                 exit={{ opacity: 0, y: 20 }}
                 className="flex items-center space-x-3 mb-4 p-3 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-dark-700 dark:to-blue-900/20 rounded-xl"
               >
-                <motion.div
-                  className="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-2 rounded-xl shadow-md"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <span className="text-sm font-bold">
-                    {user?.nombre?.charAt(0)?.toUpperCase() || 'U'}
-                  </span>
-                </motion.div>
+                <UserAvatar size="md" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
                     {user?.nombre || 'Usuario'}

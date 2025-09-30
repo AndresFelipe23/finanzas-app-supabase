@@ -4,11 +4,10 @@ import {
   Info,
   User,
   Mail,
-  Globe,
   Github,
   Linkedin,
-  Twitter,
   Coffee,
+  Instagram,
   Bug,
   Lightbulb,
   Heart,
@@ -30,20 +29,20 @@ export function InformacionApp() {
     {
       name: 'GitHub',
       icon: Github,
-      url: 'https://github.com/andresespitia',
+      url: 'https://github.com/AndresFelipe23/',
       color: 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
     },
     {
       name: 'LinkedIn',
       icon: Linkedin,
-      url: 'https://linkedin.com/in/andresespitia',
-      color: 'text-blue-600 hover:text-blue-700'
+      url: 'https://www.linkedin.com/in/andres-espitia-b0ba0421a',
+      color: 'text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500'
     },
     {
-      name: 'Twitter',
-      icon: Twitter,
-      url: 'https://twitter.com/andresespitia',
-      color: 'text-blue-400 hover:text-blue-500'
+      name: 'Instagram',
+      icon: Instagram,
+      url: 'https://www.instagram.com/a_espitias/',
+      color: 'text-blue-400 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-500'
     }
   ];
 
@@ -53,7 +52,7 @@ export function InformacionApp() {
       description: t('informacionApp.regalameCafeDesc'),
       icon: Coffee,
       color: 'bg-amber-500 hover:bg-amber-600',
-      action: () => window.open('https://buymeacoffee.com/andresespitia', '_blank')
+      action: () => window.open('https://regalameuncafe.com/andresespitia', '_blank')
     },
     {
       title: t('informacionApp.reportarError'),
