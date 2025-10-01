@@ -203,17 +203,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async (): Promise<void> => {
+    // Limpiar estado local inmediatamente
+    setUser(null);
+
     if (!isSupabaseConfigured) {
-      // Modo demo - simular logout
-      setUser(null);
       return;
     }
 
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-      }
+      // Intentar cerrar sesión en el servidor (silenciosamente)
+      await supabase.auth.signOut({ scope: 'local' });
     } catch (error) {
+      // Ignorar errores de logout del servidor
+      // El usuario ya está deslogueado localmente
     }
   };
 

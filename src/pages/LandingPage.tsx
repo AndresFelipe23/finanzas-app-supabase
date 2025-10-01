@@ -67,17 +67,17 @@ export function LandingPage() {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center space-x-8"
+              className="flex items-center space-x-2 sm:space-x-8"
             >
               <Link
                 to="/login"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className="text-gray-600 hover:text-gray-900 transition-colors text-sm sm:text-base whitespace-nowrap"
               >
                 Iniciar Sesión
               </Link>
               <Link
                 to="/register"
-                className="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
+                className="bg-gray-900 text-white px-3 sm:px-4 py-2 rounded-md hover:bg-gray-800 transition-colors text-sm sm:text-base whitespace-nowrap"
               >
                 Registrarse
               </Link>

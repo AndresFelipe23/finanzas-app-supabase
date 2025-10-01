@@ -32,7 +32,8 @@
   font-family: inherit !important;
   padding: 0 !important;
   overflow: hidden !important;
-  position: relative !important;
+  position: fixed !important;
+  z-index: 10001 !important;
 }
 
 /* Efecto de brillo sutil */
@@ -390,45 +391,102 @@
 /* Responsivo mejorado */
 @media (max-width: 640px) {
   .financially-guide-popover {
-    max-width: 320px !important;
-    margin: 20px !important;
-    border-radius: 20px !important;
+    max-width: calc(100vw - 32px) !important;
+    width: calc(100vw - 32px) !important;
+    margin: 16px !important;
+    border-radius: 16px !important;
+    left: 16px !important;
+    right: 16px !important;
   }
 
   .financially-guide-popover .driver-popover-header {
-    padding: 20px 24px 16px !important;
+    padding: 16px 20px 14px !important;
   }
 
   .financially-guide-popover .driver-popover-title {
-    font-size: 18px !important;
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+    padding-right: 36px !important;
   }
 
   .financially-guide-popover .driver-popover-body {
-    padding: 24px !important;
+    padding: 20px !important;
   }
 
   .financially-guide-popover .driver-popover-description {
-    font-size: 15px !important;
-    margin-bottom: 24px !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 20px !important;
   }
 
   .financially-guide-popover .driver-popover-footer {
-    padding: 0 24px 24px !important;
+    padding: 0 20px 20px !important;
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 10px !important;
   }
 
   .financially-guide-popover .driver-popover-btn {
     width: 100% !important;
     min-width: unset !important;
-    padding: 14px 24px !important;
+    padding: 12px 20px !important;
+    font-size: 13px !important;
   }
 
   .financially-guide-popover .driver-popover-close-btn {
-    top: 16px !important;
-    right: 20px !important;
-    width: 32px !important;
-    height: 32px !important;
+    top: 14px !important;
+    right: 16px !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 14px !important;
+  }
+
+  .financially-guide-popover .driver-popover-progress-text {
+    font-size: 12px !important;
+    padding: 6px 12px !important;
+  }
+
+  /* Reducir sombras y efectos en móvil para mejor performance */
+  .driver-highlighted-element {
+    box-shadow:
+      0 0 0 3px rgba(102, 126, 234, 0.4),
+      0 0 0 6px rgba(102, 126, 234, 0.2),
+      0 0 40px rgba(102, 126, 234, 0.3) !important;
+  }
+
+  .financially-guide-popover {
+    box-shadow:
+      0 20px 40px -12px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+  }
+
+  /* Desactivar algunos efectos costosos en móvil */
+  .driver-highlighted-element::before {
+    display: none !important;
+  }
+
+  .financially-guide-popover .driver-popover-btn::after,
+  .financially-guide-popover .driver-popover-close-btn::after {
+    display: none !important;
+  }
+
+  /* Forzar posicionamiento correcto en móvil */
+  .driver-popover {
+    transform: none !important;
+    position: fixed !important;
+    top: auto !important;
+    bottom: 16px !important;
+  }
+
+  /* Asegurar que el overlay no cause scroll horizontal */
+  .driver-overlay {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Ajustar body para prevenir scroll horizontal durante la guía */
+  body.driver-active {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
   }
 }
 

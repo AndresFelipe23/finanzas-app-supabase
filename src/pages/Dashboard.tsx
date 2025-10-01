@@ -583,61 +583,56 @@ export function Dashboard() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
                         whileHover={{ scale: 1.01, y: -2 }}
-                        className="flex items-center justify-between p-4 bg-gray-50/50 dark:bg-dark-700/50 rounded-xl hover:bg-gray-50 dark:hover:bg-dark-700 transition-all duration-200 cursor-pointer group"
+                        className="flex items-center gap-3 p-4 bg-gray-50/50 dark:bg-dark-700/50 rounded-xl hover:bg-gray-50 dark:hover:bg-dark-700 transition-all duration-200 cursor-pointer group"
                       >
-                        <div className="flex items-center space-x-4">
-                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm ${
-                            categoria?.icono && categoria.icono.trim() !== ''
-                              ? `text-white`
-                              : transaccion.tipo === 'ingreso'
-                              ? 'bg-emerald-100 dark:bg-emerald-900/20'
-                              : 'bg-red-100 dark:bg-red-900/20'
-                          }`}
-                          style={categoria?.icono && categoria.icono.trim() !== '' ? { backgroundColor: categoria.color } : {}}
-                          >
-                            {categoria?.icono && categoria.icono.trim() !== '' ? (
-                              <IconRenderer
-                                iconName={categoria.icono}
-                                className="text-white"
-                                size={24}
-                              />
-                            ) : transaccion.tipo === 'ingreso' ? (
-                              <ArrowUpRight className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
-                            ) : (
-                              <ArrowDownLeft className="h-6 w-6 text-red-600 dark:text-red-400" />
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 ${
+                          categoria?.icono && categoria.icono.trim() !== ''
+                            ? `text-white`
+                            : transaccion.tipo === 'ingreso'
+                            ? 'bg-emerald-100 dark:bg-emerald-900/20'
+                            : 'bg-red-100 dark:bg-red-900/20'
+                        }`}
+                        style={categoria?.icono && categoria.icono.trim() !== '' ? { backgroundColor: categoria.color } : {}}
+                        >
+                          {categoria?.icono && categoria.icono.trim() !== '' ? (
+                            <IconRenderer
+                              iconName={categoria.icono}
+                              className="text-white"
+                              size={20}
+                            />
+                          ) : transaccion.tipo === 'ingreso' ? (
+                            <ArrowUpRight className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600 dark:text-emerald-400" />
+                          ) : (
+                            <ArrowDownLeft className="h-5 w-5 sm:h-6 sm:w-6 text-red-600 dark:text-red-400" />
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1 overflow-hidden">
+                          <div className="flex items-center gap-2">
+                            <p className="font-semibold text-sm sm:text-base text-gray-900 dark:text-gray-100 truncate">
+                              {transaccion.nombre || categoria?.nombre || 'Sin nombre'}
+                            </p>
+                            {transaccion.recurrente && (
+                              <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
                             )}
                           </div>
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center space-x-2">
-                              <p className="font-semibold text-gray-900 dark:text-gray-100 truncate">
-                                {transaccion.nombre || categoria?.nombre || 'Sin nombre'}
-                              </p>
-                              {transaccion.recurrente && (
-                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                              )}
-                            </div>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                              {categoria?.nombre} {transaccion.descripcion && ` • ${transaccion.descripcion}`}
-                            </p>
-                            <div className="flex items-center space-x-2 text-xs text-gray-400 dark:text-gray-500 mt-1">
-                              <Calendar className="h-3 w-3" />
-                              <span>{format(parseFecha(transaccion.fecha), 'dd MMM yyyy', { locale: es })}</span>
-                              <span>•</span>
-                              <CreditCard className="h-3 w-3" />
-                              <span className="truncate">{cuenta?.nombre}</span>
-                            </div>
+                          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
+                            {categoria?.nombre}{transaccion.descripcion && ` • ${transaccion.descripcion}`}
+                          </p>
+                          <div className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 mt-1">
+                            <Calendar className="h-3 w-3 flex-shrink-0" />
+                            <span className="whitespace-nowrap">{format(parseFecha(transaccion.fecha), 'dd MMM yyyy', { locale: es })}</span>
+                            <span className="hidden sm:inline flex-shrink-0">•</span>
+                            <CreditCard className="hidden sm:inline h-3 w-3 flex-shrink-0" />
+                            <span className="hidden sm:inline truncate">{cuenta?.nombre}</span>
                           </div>
                         </div>
-                        <div className="text-right ml-4">
-                          <p className={`text-lg font-bold ${
+                        <div className="text-right flex-shrink-0">
+                          <p className={`text-sm sm:text-lg font-bold whitespace-nowrap ${
                             transaccion.tipo === 'ingreso'
                               ? 'text-emerald-600 dark:text-emerald-400'
                               : 'text-red-600 dark:text-red-400'
                           }`}>
                             {transaccion.tipo === 'ingreso' ? '+' : '-'}{formatCurrency(transaccion.monto)}
-                          </p>
-                          <p className="text-xs text-gray-400 dark:text-gray-500">
-                            {format(parseFecha(transaccion.fecha), 'HH:mm')}
                           </p>
                         </div>
                       </motion.div>

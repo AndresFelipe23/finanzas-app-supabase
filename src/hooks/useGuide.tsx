@@ -112,6 +112,9 @@ export const useGuide = () => {
     return driverInstance;
   }, [baseConfig, isGuideCompleted, markGuideAsCompleted]);
 
+  // Detectar si es móvil
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+
   // Guías predefinidas para diferentes secciones
   const guides = {
     dashboard: (): GuideStep[] => [
@@ -119,7 +122,7 @@ export const useGuide = () => {
         popover: {
           title: '✨ ¡Bienvenido a Financially!',
           description: 'Te damos la bienvenida a tu centro de control financiero personalizado. Esta guía interactiva te mostrará cómo dominar tus finanzas en pocos minutos.',
-          position: 'bottom'
+          position: isMobile ? 'bottom' : 'bottom'
         }
       },
       {
