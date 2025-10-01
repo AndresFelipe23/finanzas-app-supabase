@@ -30,11 +30,25 @@ export function TransactionForm({ isOpen, onClose, onSubmit, cuentas, categorias
     setLoading(true);
 
     try {
+      // Corrige el manejo de la fecha para evitar problemas de zona horaria.
+      // El input 'date' devuelve 'YYYY-MM-DD'. Al crear un new Date() con esto,
+      // algunos navegadores lo interpretan como UTC, causando que se guarde el día anterior.
+      // Para asegurar que se interprete en la zona horaria local, añadimos la hora.
+      const fechaSeleccionada = new Date(`${formData.fecha}T00:00:00`);
+
+      const ahora = new Date();
+      // Combina la fecha seleccionada por el usuario con la hora actual
+      fechaSeleccionada.setHours(ahora.getHours());
+      fechaSeleccionada.setMinutes(ahora.getMinutes());
+      fechaSeleccionada.setSeconds(ahora.getSeconds());
+
       await onSubmit({
         ...formData,
-        monto: parseFloat(formData.monto)
+        monto: parseFloat(formData.monto),
+        // Envía la fecha como un string ISO completo. Supabase lo manejará correctamente.
+        fecha: fechaSeleccionada.toISOString()
       });
-      
+
       // Resetear formulario
       setFormData({
         tipo: 'gasto',

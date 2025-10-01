@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Filter, ArrowUpRight, ArrowDownLeft, Trash2, Edit, TrendingUp, TrendingDown, Calendar, Search, HelpCircle } from 'lucide-react';
+import { Plus, Filter, ArrowUpRight, ArrowDownLeft, Trash2, Edit, TrendingUp, TrendingDown, Calendar, Search, HelpCircle, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { TransactionForm } from '../components/Forms/TransactionForm';
 import { useFinanceData } from '../hooks/useFinanceData';
 import { useSidebar } from '../context/SidebarContext';
@@ -26,6 +26,9 @@ export function Transacciones() {
   const [showForm, setShowForm] = useState(false);
   const [filtro, setFiltro] = useState('todos');
   const [searchTerm, setSearchTerm] = useState('');
+  const [ordenamiento, setOrdenamiento] = useState<'desc' | 'asc'>('desc'); // desc = más recientes primero
+  const [categoriaFiltro, setCategoriaFiltro] = useState('todas');
+  const [cuentaFiltro, setCuentaFiltro] = useState('todas');
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('es-CO', {
@@ -116,14 +119,20 @@ export function Transacciones() {
   const transaccionesFiltradas = transacciones
     .filter(t => {
       const matchesFiltro = filtro === 'todos' || t.tipo === filtro;
+      const matchesCategoria = categoriaFiltro === 'todas' || t.categoria_id === categoriaFiltro;
+      const matchesCuenta = cuentaFiltro === 'todas' || t.cuenta_id === cuentaFiltro;
       const matchesSearch = searchTerm === '' ||
         t.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
         getCategoria(t.categoria_id)?.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
         getCuenta(t.cuenta_id)?.nombre.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesFiltro && matchesSearch;
+      return matchesFiltro && matchesCategoria && matchesCuenta && matchesSearch;
     })
-    .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
+    .sort((a, b) => {
+      const fechaA = new Date(a.fecha).getTime();
+      const fechaB = new Date(b.fecha).getTime();
+      return ordenamiento === 'desc' ? fechaB - fechaA : fechaA - fechaB;
+    });
 
   // Estadísticas de transacciones filtradas
   const totalIngresos = transaccionesFiltradas
@@ -252,8 +261,8 @@ export function Transacciones() {
             />
           </div>
 
-          {/* Filtros */}
-          <div className="flex items-center justify-center sm:justify-start space-x-2 sm:space-x-3 overflow-x-auto pb-2">
+          {/* Filtros de tipo */}
+          <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center space-x-2 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-dark-700/50 rounded-xl p-1">
               <button
                 onClick={() => setFiltro('todos')}
@@ -286,6 +295,49 @@ export function Transacciones() {
                 {t('transacciones.gastos')}
               </button>
             </div>
+
+            {/* Botón de ordenamiento */}
+            <button
+              onClick={() => setOrdenamiento(ordenamiento === 'desc' ? 'asc' : 'desc')}
+              className="flex items-center space-x-2 px-3 sm:px-4 py-2 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-dark-700/50 rounded-xl hover:bg-white/80 dark:hover:bg-dark-800/80 transition-all duration-200"
+              title={ordenamiento === 'desc' ? 'Más recientes primero' : 'Más antiguas primero'}
+            >
+              {ordenamiento === 'desc' ? (
+                <ArrowDown className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              ) : (
+                <ArrowUp className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              )}
+              <span className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                {ordenamiento === 'desc' ? 'Recientes' : 'Antiguas'}
+              </span>
+            </button>
+          </div>
+
+          {/* Filtros adicionales */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* Filtro por categoría */}
+            <select
+              value={categoriaFiltro}
+              onChange={(e) => setCategoriaFiltro(e.target.value)}
+              className="flex-1 px-4 py-2.5 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-dark-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all duration-200 text-sm text-gray-900 dark:text-gray-100"
+            >
+              <option value="todas">Todas las categorías</option>
+              {categorias.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+              ))}
+            </select>
+
+            {/* Filtro por cuenta */}
+            <select
+              value={cuentaFiltro}
+              onChange={(e) => setCuentaFiltro(e.target.value)}
+              className="flex-1 px-4 py-2.5 bg-white/60 dark:bg-dark-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-dark-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all duration-200 text-sm text-gray-900 dark:text-gray-100"
+            >
+              <option value="todas">Todas las cuentas</option>
+              {cuentas.map(cuenta => (
+                <option key={cuenta.id} value={cuenta.id}>{cuenta.nombre}</option>
+              ))}
+            </select>
           </div>
         </div>
       </motion.div>
@@ -371,7 +423,7 @@ export function Transacciones() {
                           <span className="hidden sm:inline">•</span>
                           <div className="flex items-center space-x-1">
                             <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                            <span>{format(new Date(transaccion.fecha), 'dd MMM yyyy', { locale: es })}</span>
+                            <span>{format(new Date(transaccion.fecha), "dd MMM yyyy 'a las' HH:mm", { locale: es })}</span>
                           </div>
                         </div>
                       </div>
